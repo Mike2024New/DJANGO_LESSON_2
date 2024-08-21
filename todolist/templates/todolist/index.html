@@ -1,0 +1,27 @@
+{% extends "todolist/base.html" %}
+
+{% block title %}{{ title }}{% endblock title %}
+
+{% block content %}
+<div class="alert alert-light" role="alert">
+<form action="{% url "todolist:add" %}" method="post">
+  {% csrf_token %}
+  <input type="text" name="title" placeholder="название задачи" class="form-control"><br>
+  <button type="submit" class="btn btn-dark">Добавить</button>
+</form>
+</div>
+
+
+{% for todo in todolist  %}
+<div class="alert alert-light" role="alert">
+  <h3>{{ todo.title }}</h3>
+  {% if todo.is_complete == False %}
+    <label class="badge bg-danger-subtle border border-danger-subtle text-danger-emphasis rounded-pill">незавершен</label><br><br>
+  {% else %}
+    <label class="badge bg-success-subtle border border-success-subtle text-success-emphasis rounded-pill">завершен</label><br><br>
+  {% endif %}
+  <a href="{% url "todolist:update" todo_id=todo.id %}" class="btn btn-outline-primary">закрыть</a>
+  <a href="{% url "todolist:delete" todo_id=todo.id %}" class="btn btn-outline-danger">удалить</a>
+</div>
+{% endfor %}
+{% endblock content %}
